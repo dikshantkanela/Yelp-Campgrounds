@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Edit a Campground</title>
+</head>
+<body>
+    <h1>EDIT CAMPGROUND</h1>
+    <!-- SEND A POST REQUEST TO THE /CAMPGROUNDS ROUTE SO THAT NEW CG IS CREATED -->
+    <form action="/campgrounds/<%=campground._id%>?_method=PUT" method="POST">
+        <div>
+            <label for="title">Enter Title : </label>
+            <input id="title" type="text" value="<%= campground.title %>" name="campground[title]" >
+        </div>
+   <div>
+    <label for="location">Enter Location : </label>
+    <input type="text" id="location" value="<%= campground.location %>" name="campground[location]"  >
+   </div> 
+   <a href=""><button>UPDATE CAMPGROUND</button></a> <br> <br>
+    <a href="/campgrounds"><button>VIEW CAMPGROUNDS</button></a> 
+    </form>
+</body>
+</html>
