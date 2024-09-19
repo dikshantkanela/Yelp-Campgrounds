@@ -1,23 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campground</title>
-</head>
-<body>
-    <h1> <%= campground.title %> </h1>
-    <h2><%= campground.location %></h2>
-    <footer>
-        <a href="/campgrounds" > <button>SHOW ALL CAMPGROUNDS</button></a>
-        <a href="/campgrounds/<%=campground._id%>/edit"><button>EDIT CAMPGROUND</button></a>
-        <!-- FORM IS FOR DELETE FUNCTIONALITY -->
-        <form action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
-           
-            <button>DELETE CAMPGROUND</button>  
-        </form>
-        
-    </footer>
-  
-</body>
-</html>
+<% layout("/layouts/boilerplate.ejs") %>
+<div class="row">
+   <div class="col-6 offset-3">
+    <div class="card mb-5" >
+        <img src="<%= campground.image  %>" style="height: 300px;" alt="" />
+        <div class="card-body">
+            <h5><%= campground.title %></h5>
+          <p class="card-text"><%= campground.description  %></p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"><%= campground.location  %></li>
+          <li class="list-group-item">$<%= campground.price  %>/night</li>
+        </ul>
+        <div class="d-flex  my-3">
+            <a class="btn btn-outline-primary  mx-3 m-1 text-nowrap" style="width: 180px;" href="/campgrounds/<%=campground._id%>/edit">
+              EDIT CAMPGROUND
+            </a>
+            <form action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-danger m-1 text-nowrap" style="width: 190px;">DELETE CAMPGROUND</button>
+            </form>
+            
+          </div>
+          <div class="card-footer text-body-secondary">
+            2 days ago
+        </div>
+    </div>
+   
+  </div>
+</div>

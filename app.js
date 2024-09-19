@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override")
+const ejsMate = require("ejs-mate");
 //Mongo Setup
 const mongoose = require("mongoose");
 const Campground = require("./models/campground"); //Model
@@ -19,7 +20,7 @@ mongoose
 const path = require("path");
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
+app.engine("ejs",ejsMate); //an engine for ejs  
 //To parse the POST requests :
 app.use(express.urlencoded({ extended: true }));
 
@@ -63,13 +64,13 @@ app.get("/campgrounds/:id/edit", async (req, res) => {
   res.render("campgrounds/edit.ejs", { campground });  //essentially first step is to got to a edit form!
 });
 
-app.put("/campgrounds/:id",async(req,res)=>{ //form se aa rhi h ye put request
+app.put("/campgrounds/:id", async (req, res) => { // form sends this PUT request
   const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id,{...req.body.campground},{new:true})
-  res.redirect("campgrounds/show.ejs",{campground}); //always redirect when updated or created
-  // res.send(req.body) 
-
+  const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
+  // Redirect to the show page of the updated campground
+  res.redirect(`/campgrounds/${campground._id}`);
 });
+
 
 app.delete("/campgrounds/:id",async (req,res)=>{
   const {id} = req.params;
