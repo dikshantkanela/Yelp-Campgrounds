@@ -27,6 +27,12 @@ app.use(express.urlencoded({ extended: true }));
 //To fake post req as delete and patch/put
 app.use(methodOverride("_method"))
 
+// for try-catch error handling:
+const catchAsync = require('./utils/catchAsync');
+
+// Error class : 
+const ExpressError = require('./utils/ExpressError');
+
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });
@@ -45,10 +51,12 @@ app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new.ejs"); //to create a new campground
 });
 
-app.post("/campgrounds", async (req, res) => {
-  const campground = new Campground(req.body.campground);
-  await campground.save();
-  res.redirect(`/campgrounds/${campground._id}`);
+app.post("/campgrounds", async (req, res,next) => {
+ 
+    const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
+ 
 });
 
 app.get("/campgrounds/:id", async (req, res) => {
@@ -71,6 +79,9 @@ app.put("/campgrounds/:id", async (req, res) => { // form sends this PUT request
   res.redirect(`/campgrounds/${campground._id}`);
 });
 
+app.use((err,req,res,next)=>{
+  res.send("OH boy something went wrong!")
+})
 
 app.delete("/campgrounds/:id",async (req,res)=>{
   const {id} = req.params;
