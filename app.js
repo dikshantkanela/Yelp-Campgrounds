@@ -40,6 +40,27 @@ app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });
 
+// JOI Middleware Function : 
+const validateCampground = (req,res,next)=>{
+  const requestValidator = Joi.object({
+    campground:Joi.object({
+      title:Joi.string().required(),
+      price:Joi.number().min(0).required(),
+      image:Joi.string().required(),
+      location: Joi.string().required(),
+    }).required()
+  }) // server side validation
+  const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
+   
+  if(error){ // error aaye to just dont allow user to create the post and give error page
+    const joiMsg = error.details.map((e)=>e.message).join(','); // details is an [{}]
+    throw new ExpressError(joiMsg,400); 
+  }
+  else{
+    next();
+  }
+}
+
 app.get("/", (req, res) => {
   res.render("home.ejs");
 });
@@ -54,7 +75,7 @@ app.get("/campgrounds/new", (req, res) => {
   res.render("campgrounds/new.ejs"); //to create a new campground
 });
 
-app.post("/campgrounds", catchAsync(async (req, res,next) => { 
+app.post("/campgrounds",validateCampground, catchAsync(async (req, res,next) => { 
 //  if(!req.body.campground){
 //     throw new ExpressError("Invalid Campground Data",400); // if we try to do cleverness with postman 
 //   }
@@ -64,22 +85,6 @@ app.post("/campgrounds", catchAsync(async (req, res,next) => {
   // if(!req.body.campground.price){
 
   // }` 
-    const requestValidator = Joi.object({
-      campground:Joi.object({
-        title:Joi.string().required(),
-        price:Joi.number().min(0).required(),
-        image:Joi.string().required(),
-        location: Joi.string().required(),
-      }).required()
-    }) // server side validation
-    const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
-     
-    if(error){ // error aaye to just dont allow user to create the post and give error page
-      const joiMsg = error.details.map((e)=>e.message).join(','); // details is an [{}]
-      throw new ExpressError(joiMsg,400); 
-    }
-    
-    console.log(result);
 
     const campground = new Campground(req.body.campground);
     await campground.save();
@@ -100,7 +105,7 @@ app.get("/campgrounds/:id/edit", catchAsync(async (req, res) => {
   res.render("campgrounds/edit.ejs", { campground });  //essentially first step is to got to a edit form!
 }));
 
-app.put("/campgrounds/:id", catchAsync(async (req, res) => { // form sends this PUT request
+app.put("/campgrounds/:id", validateCampground, catchAsync(async (req, res) => { // form sends this PUT request
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
   // Redirect to the show page of the updated campground
