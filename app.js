@@ -55,6 +55,12 @@ app.post("/campgrounds", catchAsync(async (req, res,next) => {
   if(!req.body.campground){
     throw new ExpressError("Invalid Campground Data",400); // if we try to do cleverness with postman 
   }
+ ` // if(!req.body.campground.title){
+  //    // too much code 
+  // }
+  // if(!req.body.campground.price){
+
+  // }`
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
