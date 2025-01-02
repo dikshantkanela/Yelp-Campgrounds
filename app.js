@@ -71,7 +71,7 @@ app.post("/campgrounds", catchAsync(async (req, res,next) => {
         image:Joi.string().required(),
         location: Joi.string().required(),
       }).required()
-    })
+    }) // server side validation
     const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
      
     if(error){ // error aaye to just dont allow user to create the post and give error page
