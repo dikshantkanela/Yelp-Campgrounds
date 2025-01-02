@@ -33,6 +33,9 @@ const catchAsync = require('./utils/catchAsync');
 // Error class : 
 const ExpressError = require('./utils/ExpressError');
 
+// Data Validator : 
+const Joi = require('joi');
+
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });
@@ -52,15 +55,32 @@ app.get("/campgrounds/new", (req, res) => {
 });
 
 app.post("/campgrounds", catchAsync(async (req, res,next) => { 
-  if(!req.body.campground){
-    throw new ExpressError("Invalid Campground Data",400); // if we try to do cleverness with postman 
-  }
+//  if(!req.body.campground){
+//     throw new ExpressError("Invalid Campground Data",400); // if we try to do cleverness with postman 
+//   }
  ` // if(!req.body.campground.title){
   //    // too much code 
   // }
   // if(!req.body.campground.price){
 
-  // }`
+  // }` 
+    const requestValidator = Joi.object({
+      campground:Joi.object({
+        title:Joi.string().required(),
+        price:Joi.number().min(0).required(),
+        image:Joi.string().required(),
+        location: Joi.string().required(),
+      }).required()
+    })
+    const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
+     
+    if(error){ // error aaye to just dont allow user to create the post and give error page
+      const joiMsg = error.details.map((e)=>e.message).join(','); // details is an [{}]
+      throw new ExpressError(joiMsg,400); 
+    }
+    
+    console.log(result);
+
     const campground = new Campground(req.body.campground);
     await campground.save();
     res.redirect(`/campgrounds/${campground._id}`);
