@@ -72,7 +72,7 @@ const validateReview = (req,res,next)=>{
     
   })
   const {error} = requestValidator.validate(req.body);
-  if(error){
+  if(error){  
     const joiMsg = error.details.map((e)=>e.message).join(',');
     throw new ExpressError(joiMsg,400);
   }
@@ -149,6 +149,14 @@ app.post("/campgrounds/:id/reviews",validateReview,catchAsync(async(req,res)=>{
   console.log(review);
   res.redirect(`/campgrounds/${id}`);
 }));
+
+app.delete("/campgrounds/:id/reviews/:reviewId",catchAsync(async(req,res)=>{
+  const {id,reviewId} = req.params;
+  const camp = await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}}) //update the campground to remove the review from the campground!
+  const review =  await Review.findByIdAndDelete(reviewId); // delete the review individually from its collection
+  res.redirect("/campgrounds/:id");
+
+}))
 
 app.all("*",(req,res,next)=>{
   next(new ExpressError("Page not found",404));
