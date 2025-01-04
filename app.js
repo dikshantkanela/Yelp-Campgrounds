@@ -5,6 +5,7 @@ const ejsMate = require("ejs-mate");
 //Mongo Setup
 const mongoose = require("mongoose");
 const Campground = require("./models/campground"); //Model
+const Review = require("./models/review");
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp", {
     useUnifiedTopology: true,
@@ -116,6 +117,17 @@ app.delete("/campgrounds/:id",catchAsync(async (req,res)=>{
   const {id} = req.params;
   await Campground.findByIdAndDelete(id);
   res.redirect("/campgrounds")
+}));
+
+app.post("/campgrounds/:id/reviews",catchAsync(async(req,res)=>{
+  const {id} = req.params;
+  const campground = await Campground.findById(id);
+  const review = new Review(req.body.review) //unique form format
+  campground.reviews.push(review);
+  await review.save();
+  await campground.save();
+  console.log(review);
+  res.redirect(`/campgrounds/${id}`);
 }));
 
 app.all("*",(req,res,next)=>{

@@ -24,6 +24,19 @@
             2 days ago
         </div>
     </div>
+    <h2>Leave a Review</h2>
+    <form action="/campgrounds/<%=campground._id%>/reviews" method="POST" class="mb-3">
+      <div class="mb-3">
+          <label class="form-label" for="rating">Rating</label>
+          <input class="form-range" type="range" id="rating" name="review[rating]" min="0" max="5">
+      </div>
+  <div class="mb-3">
+    <label class="form-label" for="body">Review</label>
+    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"></textarea>
+    <!-- <model_name>[for:<ModelAttribute>] -->
+  </div>
+  <button class="btn btn btn-success">Submit</button>
+    </form>
    
   </div>
 </div>
