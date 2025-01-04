@@ -36,6 +36,7 @@ const ExpressError = require('./utils/ExpressError');
 
 // Data Validator : 
 const Joi = require('joi');
+const { request } = require("http");
 
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
@@ -56,6 +57,24 @@ const validateCampground = (req,res,next)=>{
   if(error){ // error aaye to just dont allow user to create the post and give error page
     const joiMsg = error.details.map((e)=>e.message).join(','); // details is an [{}]
     throw new ExpressError(joiMsg,400); 
+  }
+  else{
+    next();
+  }
+}
+
+const validateReview = (req,res,next)=>{
+  const requestValidator = Joi.object({
+    review:Joi.object({
+      body:Joi.string().required(),
+      rating:Joi.number().min(0).max(5).required()
+    }).required()
+    
+  })
+  const {error} = requestValidator.validate(req.body);
+  if(error){
+    const joiMsg = error.details.map((e)=>e.message).join(',');
+    throw new ExpressError(joiMsg,400);
   }
   else{
     next();
@@ -96,7 +115,8 @@ app.post("/campgrounds",validateCampground, catchAsync(async (req, res,next) => 
 app.get("/campgrounds/:id", catchAsync(async (req, res) => {
   //route to show detail of a specfic campgorund (ID)
   const { id } = req.params;
-  const campground = await Campground.findById(id);
+  const campground = await Campground.findById(id).populate("reviews");
+  console.log(campground);
   res.render("campgrounds/show.ejs", { campground });
 }));
 
@@ -119,12 +139,12 @@ app.delete("/campgrounds/:id",catchAsync(async (req,res)=>{
   res.redirect("/campgrounds")
 }));
 
-app.post("/campgrounds/:id/reviews",catchAsync(async(req,res)=>{
+app.post("/campgrounds/:id/reviews",validateReview,catchAsync(async(req,res)=>{
   const {id} = req.params;
   const campground = await Campground.findById(id);
   const review = new Review(req.body.review) //unique form format
   campground.reviews.push(review);
-  await review.save();
+  await review.save(); 
   await campground.save();
   console.log(review);
   res.redirect(`/campgrounds/${id}`);
