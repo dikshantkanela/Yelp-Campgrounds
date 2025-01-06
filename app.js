@@ -38,30 +38,11 @@ const ExpressError = require('./utils/ExpressError');
 const Joi = require('joi');
 const { request } = require("http");
 
+const campgrounds = require("./routes/campgrounds");
+
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });
-
-// JOI Middleware Function : 
-const validateCampground = (req,res,next)=>{
-  const requestValidator = Joi.object({
-    campground:Joi.object({
-      title:Joi.string().required(),
-      price:Joi.number().min(0).required(),
-      image:Joi.string().required(),
-      location: Joi.string().required(),
-    }).required()
-  }) // server side validation
-  const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
-   
-  if(error){ // error aaye to just dont allow user to create the post and give error page
-    const joiMsg = error.details.map((e)=>e.message).join(','); // details is an [{}]
-    throw new ExpressError(joiMsg,400); 
-  }
-  else{
-    next();
-  }
-}
 
 const validateReview = (req,res,next)=>{
   const requestValidator = Joi.object({
@@ -81,63 +62,14 @@ const validateReview = (req,res,next)=>{
   }
 }
 
+
+app.use("/campgrounds",campgrounds);
+
 app.get("/", (req, res) => {
   res.render("home.ejs");
 });
 
-app.get("/campgrounds", async (req, res) => {
-  //route to show all campgrounds
-  const campgrounds = await Campground.find({}); //use async only when we apply query
-  res.render("campgrounds/index.ejs", { campgrounds });
-});
 
-app.get("/campgrounds/new", (req, res) => {
-  res.render("campgrounds/new.ejs"); //to create a new campground
-});
-
-app.post("/campgrounds",validateCampground, catchAsync(async (req, res,next) => { 
-//  if(!req.body.campground){
-//     throw new ExpressError("Invalid Campground Data",400); // if we try to do cleverness with postman 
-//   }
- ` // if(!req.body.campground.title){
-  //    // too much code 
-  // }
-  // if(!req.body.campground.price){
-
-  // }` 
-
-    const campground = new Campground(req.body.campground);
-    await campground.save();
-    res.redirect(`/campgrounds/${campground._id}`);
-
-}));
-
-app.get("/campgrounds/:id", catchAsync(async (req, res) => {
-  //route to show detail of a specfic campgorund (ID)
-  const { id } = req.params;
-  const campground = await Campground.findById(id).populate("reviews");
-  console.log(campground);
-  res.render("campgrounds/show.ejs", { campground });
-}));
-
-app.get("/campgrounds/:id/edit", catchAsync(async (req, res) => {  
-  const { id } = req.params;  //edit wale form me tujhe ek specific camp ka data bhejna hai
-  const campground = await Campground.findById(id);
-  res.render("campgrounds/edit.ejs", { campground });  //essentially first step is to got to a edit form!
-}));
-
-app.put("/campgrounds/:id", validateCampground, catchAsync(async (req, res) => { // form sends this PUT request
-  const { id } = req.params;
-  const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
-  // Redirect to the show page of the updated campground
-  res.redirect(`/campgrounds/${campground._id}`);
-}));
-
-app.delete("/campgrounds/:id",catchAsync(async (req,res)=>{
-  const {id} = req.params;
-  await Campground.findByIdAndDelete(id);
-  res.redirect("/campgrounds")
-}));
 
 app.post("/campgrounds/:id/reviews",validateReview,catchAsync(async(req,res)=>{
   const {id} = req.params;
@@ -154,7 +86,7 @@ app.delete("/campgrounds/:id/reviews/:reviewId",catchAsync(async(req,res)=>{
   const {id,reviewId} = req.params;
   const camp = await Campground.findByIdAndUpdate(id,{$pull:{reviews:reviewId}}) //update the campground to remove the review from the campground!
   const review =  await Review.findByIdAndDelete(reviewId); // delete the review individually from its collection
-  res.redirect("/campgrounds/:id");
+  res.redirect(`/campgrounds/${id}`);
 
 }))
 
