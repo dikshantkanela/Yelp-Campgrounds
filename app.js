@@ -18,6 +18,8 @@ mongoose
   .catch((err) => {
     console.log("DATABASE CONNECTTION ERROR" + err);
   });
+
+  const session = require("express-session");
 //EJS Setup
 const path = require("path");
 app.set("view engine", "ejs");
@@ -32,6 +34,19 @@ app.use(methodOverride("_method"))
 // for static files in public folder
 app.use(express.static(path.join(__dirname,"public")))
 
+// session
+app.use(
+  session({
+    secret: "thisisnotagoodsecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie:{
+      httpOnly:true,
+      expires: Date.now() + 1000*60*60*24*7,
+      maxAge:1000*60*60*24*7,
+    }
+  })
+);
 // Error class : 
 const ExpressError = require('./utils/ExpressError');
 
