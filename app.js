@@ -67,7 +67,7 @@ app.listen(3000, () => {
 // FOR FLASH MUST BE BEFORE ANY ROUTE HANDLER!!!!
 app.use((req,res,next)=>{
   res.locals.success = req.flash("success");
-  res.locals.update = req.flash("update")
+  res.locals.error = req.flash("error")
   next();
 })
 

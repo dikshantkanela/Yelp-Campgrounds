@@ -62,6 +62,10 @@ router.get("/:id", catchAsync(async (req, res) => {
   //route to show detail of a specfic campgorund (ID)
   const { id } = req.params;
   const campground = await Campground.findById(id).populate("reviews");
+  if(!campground){ // for ERROR FLASHING IF CAMPGROUND NOT FOUND!
+    req.flash("error","Campgorund Not Found!")
+    return res.redirect("/campgrounds")
+  }
   console.log(campground);
   res.render("campgrounds/show.ejs", { campground });
 }));
@@ -69,6 +73,10 @@ router.get("/:id", catchAsync(async (req, res) => {
 router.get("/:id/edit", catchAsync(async (req, res) => {  
   const { id } = req.params;  //edit wale form me tujhe ek specific camp ka data bhejna hai
   const campground = await Campground.findById(id);
+  if(!campground){
+    req.flash("error","Campground Not Found!")
+    return res.redirect("/campgrounds");
+  }
   res.render("campgrounds/edit.ejs", { campground });  //essentially first step is to got to a edit form!
 }));
 
