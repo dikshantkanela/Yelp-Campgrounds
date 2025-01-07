@@ -53,6 +53,7 @@ router.post("/",validateCampground, catchAsync(async (req, res,next) => {
 
     const campground = new Campground(req.body.campground);
     await campground.save();
+    req.flash("success","Successfully created a New Campground!") //FLASH MSG
     res.redirect(`/campgrounds/${campground._id}`);
 
 }));
@@ -75,6 +76,7 @@ router.put("/:id", validateCampground, catchAsync(async (req, res) => { // form 
   const { id } = req.params;
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
   // Redirect to the show page of the updated campground
+  req.flash("success","Campground Updated Successfully!");
   res.redirect(`/campgrounds/${campground._id}`);
 }));
 

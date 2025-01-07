@@ -19,7 +19,8 @@ mongoose
     console.log("DATABASE CONNECTTION ERROR" + err);
   });
 
-  const session = require("express-session");
+const session = require("express-session");
+const flash = require("connect-flash");
 //EJS Setup
 const path = require("path");
 app.set("view engine", "ejs");
@@ -47,6 +48,8 @@ app.use(
     }
   })
 );
+//flash
+app.use(flash());
 // Error class : 
 const ExpressError = require('./utils/ExpressError');
 
@@ -61,10 +64,17 @@ app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
 });
 
+// FOR FLASH MUST BE BEFORE ANY ROUTE HANDLER!!!!
+app.use((req,res,next)=>{
+  res.locals.success = req.flash("success");
+  res.locals.update = req.flash("update")
+  next();
+})
 
 // ALL MAIN ROUTES
 app.use("/campgrounds",campgrounds);
 app.use("/",reviews);
+
 
 // HOME PAGE
 app.get("/", (req, res) => {

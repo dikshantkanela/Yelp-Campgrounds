@@ -1,0 +1,10 @@
+<% if(success.length!==0){ %> 
+    <!-- WE NEED THIS DEBUGGING BECAUSE IT IS AN ARRAY, IT IS ONLY EMPTY WHEN IT DOES NOT HAVE A SUCCESS MESSAGE -->
+     <!-- SO TO ENSURE THIS DOES ONLY APPEAR WHEN SUCCESS IS THERE -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+     <%=  success %>    
+     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+<%  } %>
+
+<!-- DISSMISSBLE ALERT FOR SUCCESS -->
