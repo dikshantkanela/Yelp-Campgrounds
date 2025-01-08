@@ -6,6 +6,8 @@ const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
 const Campground = require("./models/campground"); //Model
 const Review = require("./models/review");
+const User = require("./models/user");
+
 mongoose
   .connect("mongodb://127.0.0.1:27017/yelp-camp", {
     useUnifiedTopology: true,
@@ -21,6 +23,9 @@ mongoose
 
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+
 //EJS Setup
 const path = require("path");
 app.set("view engine", "ejs");
@@ -48,6 +53,15 @@ app.use(
     }
   })
 );
+
+//passport local : 
+app.use(passport.initialize()) //SETS UP PASSPORT FOR AUTH
+app.use(passport.session()); // IS USED TO ENSURE PERSISTENT LOGIN ACROSS ALL PAGES (MANAGING SESSIONS)
+
+passport.use(new LocalStrategy(User.authenticate())); //.authenticate IS A METHOD USED TO VERIFY USERNAME AND PASSWORD
+passport.serializeUser(User.serializeUser()); // THE PROCESS OF SAVING USER's DATA INTO SESSION AFTER THEY LOG IN 
+passport.deserializeUser(User.deserializeUser()); // THE PROCESS OF FETCHING USER DETAILS FROM DB
+
 //flash
 app.use(flash());
 // Error class : 
@@ -72,6 +86,13 @@ app.use((req,res,next)=>{
 })
 
 // ALL MAIN ROUTES
+// FAKE REGISTER USER : 
+app.get("/fakeUser",async(req,res)=>{
+  const user = new User({email:"colt@gmail.com",username:"colt"});
+  const newUser = await User.register(user,"chicken"); // REGISTER THE USER IN THE DB AND ALSO CREATE SALT AND HASH AUTOMATICALLY!
+  res.send(newUser);
+
+})
 app.use("/campgrounds",campgrounds);
 app.use("/",reviews);
 
