@@ -71,8 +71,9 @@ const ExpressError = require('./utils/ExpressError');
 const Joi = require('joi');
 const { request } = require("http");
 
-const campgrounds = require("./routes/campgrounds");
-const reviews = require("./routes/reviews");
+const campgroundsRoute = require("./routes/campgrounds");
+const reviewsRoute = require("./routes/reviews");
+const usersRoute = require("./routes/users");
 
 app.listen(3000, () => {
   console.log("LISTENING ON PORT 3000!");
@@ -93,9 +94,9 @@ app.get("/fakeUser",async(req,res)=>{
   res.send(newUser);
 
 })
-app.use("/campgrounds",campgrounds);
-app.use("/",reviews);
-
+app.use("/campgrounds",campgroundsRoute);
+app.use("/",reviewsRoute);
+app.use("/",usersRoute);
 
 // HOME PAGE
 app.get("/", (req, res) => {
