@@ -22,5 +22,17 @@ router.post("/register",catchAsync(async(req,res)=>{
     }
   
 }))
+
+router.get("/login",(req,res)=>{
+    res.render("users/login.ejs");
+});
+
+// to verify login using passport.authenticate("local")
+router.post("/login", passport.authenticate("local",{failureFlash:true,failureRedirect:"/login"}),(req,res)=>{
+    const {username} = req.body; // this will be from the form!
+    req.flash("success",`Welcome Back, ${username.charAt(0).toUpperCase()+username.slice(1)}`);
+    res.redirect("/campgrounds")
+});
+
 module.exports = router;
 

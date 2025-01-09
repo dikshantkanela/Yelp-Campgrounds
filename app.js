@@ -53,7 +53,8 @@ app.use(
     }
   })
 );
-
+//flash
+app.use(flash()); 
 //passport local : 
 app.use(passport.initialize()) //SETS UP PASSPORT FOR AUTH
 app.use(passport.session()); // IS USED TO ENSURE PERSISTENT LOGIN ACROSS ALL PAGES (MANAGING SESSIONS)
@@ -62,8 +63,7 @@ passport.use(new LocalStrategy(User.authenticate())); //.authenticate IS A METHO
 passport.serializeUser(User.serializeUser()); // THE PROCESS OF SAVING USER's DATA INTO SESSION AFTER THEY LOG IN 
 passport.deserializeUser(User.deserializeUser()); // THE PROCESS OF FETCHING USER DETAILS FROM DB
 
-//flash
-app.use(flash());
+
 // Error class : 
 const ExpressError = require('./utils/ExpressError');
 
