@@ -29,11 +29,22 @@ router.get("/login",(req,res)=>{
 
 // to verify login using passport.authenticate("local")
 // failureFlash will also show error if any credential is wrong
-router.post("/login", passport.authenticate("local",{failureFlash:false,failureRedirect:"/login"}),(req,res)=>{
+router.post("/login", passport.authenticate("local",{failureFlash:true,failureRedirect:"/login"}),(req,res)=>{
     const {username} = req.body; // this will be from the form!
     req.flash("success",`Welcome Back, ${username.charAt(0).toUpperCase()+username.slice(1)}`);
-    res.redirect("/campgrounds")
+    res.redirect("/campgrounds");
 });
+
+router.get('/logout', (req, res, next) => {
+    req.logout(function (err) {
+        if (err) {
+            return next(err);
+        }
+        req.flash('success', 'Goodbye!');
+        res.redirect('/campgrounds');
+    });
+}); 
+
 
 module.exports = router;
 

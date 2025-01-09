@@ -30,7 +30,7 @@ const validateCampground = (req,res,next)=>{
   }
 
  // WE HAVE /campgrounds as a PREFIX ALREADY!
-router.get("/",isLoggedIn, async (req, res) => {
+router.get("/", async (req, res) => {
   //route to show all campgrounds
   const campgrounds = await Campground.find({}); //use async only when we routerly query
   res.render("campgrounds/index.ejs", { campgrounds });
