@@ -5,7 +5,7 @@ const ExpressError = require('../utils/ExpressError');
 const Joi = require('joi');  
 const Campground = require("../models/campground"); //Model
 // const Review = require("../models/review");
-const isLoggedIn = require("../middleware"); // used to check user is logged in or not
+const {isLoggedIn} = require("../middleware"); // used to check user is logged in or not
 
 // JOI Middleware Function : 
 const validateCampground = (req,res,next)=>{
