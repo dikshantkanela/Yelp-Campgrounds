@@ -28,6 +28,7 @@ router.get("/login",(req,res)=>{
 });
 
 // to verify login using passport.authenticate("local")
+// .authenticate will also show error if any credential is wrong
 router.post("/login", passport.authenticate("local",{failureFlash:true,failureRedirect:"/login"}),(req,res)=>{
     const {username} = req.body; // this will be from the form!
     req.flash("success",`Welcome Back, ${username.charAt(0).toUpperCase()+username.slice(1)}`);
