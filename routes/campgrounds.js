@@ -5,7 +5,7 @@ const ExpressError = require('../utils/ExpressError');
 const Joi = require('joi');  
 const Campground = require("../models/campground"); //Model
 // const Review = require("../models/review");
-const {isLoggedIn} = require("../middleware"); // used to check user is logged in or not
+const {isLoggedIn,storeReturnTos} = require("../middleware"); // used to check user is logged in or not
 
 // JOI Middleware Function : 
 const validateCampground = (req,res,next)=>{
@@ -79,11 +79,22 @@ router.get("/:id/edit",isLoggedIn, catchAsync(async (req, res) => {
     req.flash("error","Campground Not Found!")
     return res.redirect("/campgrounds");
   }
+  if(!campground.author.equals(req.user._id)){  // ENSURE ONLY THE AUTHOR CAN EDIT AND NOT NON-AUTHOR THE SIGNED IN PERSON
+     req.flash("error","You do not have permission to do that!");
+     return res.redirect(`/campgrounds/${id}`);
+  }
+  
+  
   res.render("campgrounds/edit.ejs", { campground });  //essentially first step is to got to a edit form!
 }));
 
 router.put("/:id",isLoggedIn, validateCampground, catchAsync(async (req, res) => { // form sends this PUT request
   const { id } = req.params;
+  const camp = await Campground.findById(id);
+  if(!camp.author.equals(req.user._id)){  // ENSURE ONLY THE AUTHOR CAN EDIT AND NOT NON-AUTHOR THE SIGNED IN PERSON
+     req.flash("error","You do not have permission to do that!");
+     return res.redirect(`/campgrounds/${id}`);
+  }
   const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
   // Redirect to the show page of the updated campground
   req.flash("success","Campground Updated Successfully!");
@@ -91,7 +102,13 @@ router.put("/:id",isLoggedIn, validateCampground, catchAsync(async (req, res) =>
 }));
 
 router.delete("/:id",isLoggedIn,catchAsync(async (req,res)=>{
-  const {id} = req.params;
+  const {id}  = req.params;
+  const camp = await Campground.findById(id);
+  if(!camp.author.equals(req.user._id)){  // ENSURE ONLY THE AUTHOR CAN DELETE AND NOT NON-AUTHOR THE SIGNED IN PERSON
+     req.flash("error","You do not have permission to do that!");
+     return res.redirect(`/campgrounds/${id}`);
+  }
+ 
   await Campground.findByIdAndDelete(id);
   res.redirect("/campgrounds")
 }));

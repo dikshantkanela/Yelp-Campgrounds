@@ -5,6 +5,8 @@ const storeReturnTo = (req,res,next)=>{
     next();
 }
 
+ 
+
 const isLoggedIn = (req,res,next)=>{
     console.log("Current USER :"  + req.user);
     if(!req.isAuthenticated()){
