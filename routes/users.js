@@ -12,7 +12,7 @@ router.post("/register",catchAsync(async(req,res,next)=>{
     try{
         const {username,email,password} = req.body;
         const user = new User({username,email});
-        const registeredUser = await User.register(user,password);
+        const registeredUser = await User.register(user,password); //IT WILL HANDLE .save()
         // console.log(registeredUser);
         req.login(registeredUser,(err)=>{  //TO MAKE SURE REGISTERING ALSO LOGS IN THE USER!
             if(err){

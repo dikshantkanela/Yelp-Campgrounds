@@ -8,6 +8,7 @@ const campgroundSchema = new Schema({
   price: Number,
   description: String,
   location: String,
+  author:{type:mongoose.Schema.Types.ObjectId,ref:"User"}, // associate the author name with the campground
   reviews:[
     {type:mongoose.Schema.Types.ObjectId,
       ref:"Review"

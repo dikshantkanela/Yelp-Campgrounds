@@ -52,6 +52,7 @@ router.post("/",isLoggedIn,validateCampground, catchAsync(async (req, res,next) 
   // }` 
 
     const campground = new Campground(req.body.campground);
+    campground.author = req.user._id // THE AUTHOR OF THE CAMPGROUND IS THE LOGGED IN USER WHEN A NEW CAMPGROUND IS CREATED
     await campground.save();
     req.flash("success","Successfully created a New Campground!") //FLASH MSG
     res.redirect(`/campgrounds/${campground._id}`);
@@ -61,12 +62,13 @@ router.post("/",isLoggedIn,validateCampground, catchAsync(async (req, res,next) 
 router.get("/:id", catchAsync(async (req, res) => {
   //route to show detail of a specfic campgorund (ID)
   const { id } = req.params;
-  const campground = await Campground.findById(id).populate("reviews");
+  const campground = await Campground.findById(id).populate("reviews").populate("author");
+  console.log(campground);
   if(!campground){ // for ERROR FLASHING IF CAMPGROUND NOT FOUND!
     req.flash("error","Campgorund Not Found!")
     return res.redirect("/campgrounds")
   }
-  console.log(campground);
+  // console.log(campground);
   res.render("campgrounds/show.ejs", { campground });
 }));
 

@@ -9,17 +9,20 @@
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item"><%= campground.location  %></li>
+          <li class="list-group-item">Submitted by : <%= campground.author.username  %></li>
           <li class="list-group-item">$<%= campground.price  %>/night</li>
         </ul>
+      <%   if(currentUser && campground.author.equals(currentUser)){  %>
         <div class="d-flex  my-3">
-            <a class="btn btn-outline-primary  mx-3 m-1 text-nowrap" style="width: 180px;" href="/campgrounds/<%=campground._id%>/edit">
-              EDIT CAMPGROUND
-            </a>
-            <form action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-danger m-1 text-nowrap" style="width: 190px;">DELETE CAMPGROUND</button>
-            </form>
-            
-          </div>
+          <a class="btn btn-outline-primary  mx-3 m-1 text-nowrap" style="width: 180px;" href="/campgrounds/<%=campground._id%>/edit">
+            EDIT CAMPGROUND
+          </a>
+          <form action="/campgrounds/<%=campground._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-danger m-1 text-nowrap" style="width: 190px;">DELETE CAMPGROUND</button>
+          </form>
+          
+        </div>
+     <% }    %> 
           <div class="card-footer text-body-secondary">
             2 days ago
         </div>
