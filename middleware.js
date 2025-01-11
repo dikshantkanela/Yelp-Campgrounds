@@ -16,4 +16,19 @@ const isLoggedIn = (req,res,next)=>{
     }
     next();
  }
- module.exports = {storeReturnTo, isLoggedIn};
+
+const isAuthor = async(req,res,next)=>{
+  const {id} = req.params;
+  const camp = await Campground.findById(id);
+   if(!camp.author.equals(req.user._id)){  // ENSURE ONLY THE AUTHOR CAN EDIT AND NOT NON-AUTHOR THE SIGNED IN PERSON
+     req.flash("error","You do not have permission to do that!");
+     return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+
+ module.exports = {storeReturnTo, isLoggedIn,isAuthor};
+
+ 
+
+ 
