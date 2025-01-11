@@ -1,3 +1,5 @@
+const Review = require("./models/review");
+const Campground = require("./models/campground");
 const storeReturnTo = (req,res,next)=>{
     if(req.session.returnTo){ // THAT IS WHEN THE USER IS NOT LOGGED IN
         res.locals.returnTo = req.session.returnTo;
@@ -27,7 +29,17 @@ const isAuthor = async(req,res,next)=>{
   next();
 };
 
- module.exports = {storeReturnTo, isLoggedIn,isAuthor};
+const isAuthorOfReview = async(req,res,next)=>{
+  const {id,reviewId} = req.params;
+  const review = await Review.findById(reviewId);
+   if(!review.author.equals(req.user._id)){  // ENSURE ONLY THE AUTHOR CAN EDIT AND NOT NON-AUTHOR THE SIGNED IN PERSON
+     req.flash("error","You do not have permission to do that!");
+     return res.redirect(`/campgrounds/${id}`);
+  }
+  next();
+};
+
+ module.exports = {storeReturnTo, isLoggedIn,isAuthor,isAuthorOfReview};
 
  
 
