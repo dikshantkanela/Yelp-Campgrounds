@@ -36,7 +36,10 @@ router.get("/", catchAsync(campgrounds.index)); // ROUTE TO SHOW ALL CAMPGROUNDS
 
 router.get("/new",isLoggedIn,campgrounds.renderNewForm); //FORM FOR A NEW CAMPGROUND
 
-router.post("/",isLoggedIn,validateCampground, catchAsync(campgrounds.createCampground)); // CREATING A NEW CAMPGROUND
+// router.post("/",isLoggedIn,validateCampground, catchAsync(campgrounds.createCampground)); // CREATING A NEW CAMPGROUND
+router.post("/",(req,res)=>{
+  res.send(req.body);
+})
 
 router.get("/:id", catchAsync(campgrounds.showCampground));  //ROUTE TO SHOW DETAIL OF A SPECFIC CAMPGORUND (ID)
 
