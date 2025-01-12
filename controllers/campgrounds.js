@@ -19,10 +19,12 @@ module.exports.createCampground = async (req, res, next) => {
       // if(!req.body.campground.price){
     
       // }`;
-
   const campground = new Campground(req.body.campground);
+  const images = req.files.map(f=>({url:f.path,filename:f.filename})); //TAKE ALL UPLOADED IMAGES FROM req.files AND THEN STORE THEM IN N ARRAY OF OBJECT
+  campground.images = images;
   campground.author = req.user._id; // THE AUTHOR OF THE CAMPGROUND IS THE LOGGED IN USER WHEN A NEW CAMPGROUND IS CREATED
   await campground.save();
+  console.log(campground)
   req.flash("success", "Successfully created a New Campground!"); //FLASH MSG
   res.redirect(`/campgrounds/${campground._id}`);
 };

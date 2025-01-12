@@ -45,17 +45,18 @@ router.get("/", catchAsync(campgrounds.index)); // ROUTE TO SHOW ALL CAMPGROUNDS
 router.get("/new",isLoggedIn,campgrounds.renderNewForm); //FORM FOR A NEW CAMPGROUND
 
 // router.post("/",isLoggedIn,validateCampground, catchAsync(campgrounds.createCampground)); // CREATING A NEW CAMPGROUND
-
 //SINGLE FILE : 
 // router.post("/",upload.single("image"),(req,res)=>{
 //   console.log(req.body,req.file); //req.body contains text data and req.file contains the uploaded file
 //   res.send("IT WORKED!")
 // })
 // MUTLIPLE FILES : 
-router.post("/",upload.array("image"),(req,res)=>{
-  console.log(req.body,req.files); //req.body contains text data and req.file contains the deatils of uploaded file
-  res.send("IT WORKED!")
-})
+// router.post("/",upload.array("image"),(req,res)=>{
+//   console.log(req.body,req.files); //req.body contains text data and req.file contains the deatils of uploaded file
+//   res.send("IT WORKED!")
+// })
+//FINAL : FOR UPLOADING
+router.post("/",isLoggedIn,upload.array("image",validateCampground),catchAsync(campgrounds.createCampground));
 
 router.get("/:id", catchAsync(campgrounds.showCampground));  //ROUTE TO SHOW DETAIL OF A SPECFIC CAMPGORUND (ID)
 
