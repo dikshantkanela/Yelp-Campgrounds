@@ -21,7 +21,7 @@ const validateCampground = (req,res,next)=>{
       campground:Joi.object({
         title:Joi.string().required(),
         price:Joi.number().min(0).required(),
-        image:Joi.string().required(),
+        // image:Joi.string().required(),
         location: Joi.string().required(),
         description: Joi.string().required(),   
       }).required()
@@ -62,7 +62,7 @@ router.get("/:id", catchAsync(campgrounds.showCampground));  //ROUTE TO SHOW DET
 
 router.get("/:id/edit",isLoggedIn,isAuthor,  catchAsync(campgrounds.renderEditForm)); // SHOW EDIT FORM
 
-router.put("/:id",isLoggedIn, isAuthor, validateCampground, catchAsync(campgrounds.updateCampground)); // UPDATING A CAMPGROUND
+router.put("/:id",isLoggedIn, isAuthor, upload.array("image"), validateCampground, catchAsync(campgrounds.updateCampground)); // UPDATING A CAMPGROUND
 
 router.delete("/:id",isLoggedIn,isAuthor,catchAsync(campgrounds.deleteCampground)); // DELETE A CAMPGROUND
 

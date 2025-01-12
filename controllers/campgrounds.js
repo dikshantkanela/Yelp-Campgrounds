@@ -21,7 +21,7 @@ module.exports.createCampground = async (req, res, next) => {
       // }`;
   const campground = new Campground(req.body.campground);
   const images = req.files.map(f=>({url:f.path,filename:f.filename})); //TAKE ALL UPLOADED IMAGES FROM req.files AND THEN STORE THEM IN N ARRAY OF OBJECT
-  campground.images = images;
+  campground.images = images; 
   campground.author = req.user._id; // THE AUTHOR OF THE CAMPGROUND IS THE LOGGED IN USER WHEN A NEW CAMPGROUND IS CREATED
   await campground.save();
   console.log(campground)
@@ -58,6 +58,9 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => { // form sends this PUT request
     const { id } = req.params;
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
+    const editImages = req.files.map(f=>({url:f.path,filename:f.filename}));
+    campground.images.push(...editImages); // only UPDATE THE ARRAY;
+    await campground.save();
     // Redirect to the show page of the updated campground
     req.flash("success","Campground Updated Successfully!");
     res.redirect(`/campgrounds/${campground._id}`);
