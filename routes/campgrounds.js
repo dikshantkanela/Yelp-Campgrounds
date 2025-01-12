@@ -4,9 +4,15 @@ const catchAsync = require("../utils/catchAsync")
 const ExpressError = require('../utils/ExpressError');
 const Joi = require('joi');  
 const Campground = require("../models/campground"); //Model
+
 // const Review = require("../models/review");
 const {isLoggedIn,isAuthor} = require("../middleware"); // used to check user is logged in or not
 const campgrounds = require("../controllers/campgrounds")
+
+// for multer 
+const multer = require("multer");
+const upload = multer({dest:"/uploads"});
+
 // JOI Middleware Function : 
 const validateCampground = (req,res,next)=>{
     const requestValidator = Joi.object({
@@ -37,8 +43,16 @@ router.get("/", catchAsync(campgrounds.index)); // ROUTE TO SHOW ALL CAMPGROUNDS
 router.get("/new",isLoggedIn,campgrounds.renderNewForm); //FORM FOR A NEW CAMPGROUND
 
 // router.post("/",isLoggedIn,validateCampground, catchAsync(campgrounds.createCampground)); // CREATING A NEW CAMPGROUND
-router.post("/",(req,res)=>{
-  res.send(req.body);
+
+//SINGLE FILE : 
+// router.post("/",upload.single("image"),(req,res)=>{
+//   console.log(req.body,req.file); //req.body contains text data and req.file contains the uploaded file
+//   res.send("IT WORKED!")
+// })
+// MUTLIPLE FILES : 
+router.post("/",upload.array("image"),(req,res)=>{
+  console.log(req.body,req.files); //req.body contains text data and req.file contains the uploaded file
+  res.send("IT WORKED!")
 })
 
 router.get("/:id", catchAsync(campgrounds.showCampground));  //ROUTE TO SHOW DETAIL OF A SPECFIC CAMPGORUND (ID)
