@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== "production"){
+  require("dotenv").config(); //THIS WILL USE DOTENV PACKAGE AND STORE ALL ENVIRONMENT VARIABLES INTO process.env
+}
+console.log(process.env.SECRET);
+
 const express = require("express");
 const app = express();
 const methodOverride = require("method-override")

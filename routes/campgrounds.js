@@ -11,7 +11,7 @@ const campgrounds = require("../controllers/campgrounds")
 
 // for multer 
 const multer = require("multer");
-const upload = multer({dest:"/uploads"});
+const upload = multer({dest:"uploads/"});
 
 // JOI Middleware Function : 
 const validateCampground = (req,res,next)=>{
