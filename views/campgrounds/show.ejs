@@ -2,10 +2,33 @@
 <link rel="stylesheet" href="/stylesheets/stars.css">
 <div class="row">
    <div class="col-6 ">
+
+    <div id="carouselExample" class="carousel slide">
+      <div class="carousel-inner">
+        <!-- DISPLAY CAROUSEL AND ENSURE ONLY THE FIRST INDEX IMAGE IS ACTIVE -->
+      <% campground.images.forEach((img,index)=>{  %>
+        <div class="carousel-item <%=index===0? "active":""%>">
+          <img src="<%=img.url%>" alt="">
+        </div>
+      <%  })   %>
+        
+      </div>
+      <!-- ONLY DISPLAY LEFT RIGHT ARROW WHEN THERE ARE MORE THAN ONE IMAGES -->
+      <%  if(campground.images.length>1){ %>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+    <%   }   %>
+      
+    </div>
+
     <div class="card mb-5" >
-     <%  for(img of campground.images){   %>
-        <img src="<%= img.url  %>" style="height: 300px;" alt="" />
-    <%   }   %>        
+         
         <div class="card-body">
             <h5><%= campground.title %></h5>
           <p class="card-text"><%= campground.description  %></p>
