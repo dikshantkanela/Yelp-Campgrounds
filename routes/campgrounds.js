@@ -9,9 +9,11 @@ const Campground = require("../models/campground"); //Model
 const {isLoggedIn,isAuthor} = require("../middleware"); // used to check user is logged in or not
 const campgrounds = require("../controllers/campgrounds")
 
-// for multer 
+// for multer
+const {storage} = require("../cloudinary/index"); 
 const multer = require("multer");
-const upload = multer({dest:"uploads/"});
+// const upload = multer({dest:"uploads/"});
+const upload = multer({storage}); // TELLING MUTLTER TO STORE IN STORAGE (CLOUDINARY)
 
 // JOI Middleware Function : 
 const validateCampground = (req,res,next)=>{
@@ -51,7 +53,7 @@ router.get("/new",isLoggedIn,campgrounds.renderNewForm); //FORM FOR A NEW CAMPGR
 // })
 // MUTLIPLE FILES : 
 router.post("/",upload.array("image"),(req,res)=>{
-  console.log(req.body,req.files); //req.body contains text data and req.file contains the uploaded file
+  console.log(req.body,req.files); //req.body contains text data and req.file contains the deatils of uploaded file
   res.send("IT WORKED!")
 })
 
