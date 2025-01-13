@@ -35,8 +35,8 @@ module.exports.showCampground = async (req, res) => {
     const campground = await Campground.findById(id).populate({path:"reviews",populate:{path:"author"}}).populate("author"); // TO SHOW NAME OF AUTHOR OF CAMPGROUNDS AS WELL AS NAME OF AUTHOR OF REVIEW
     console.log(campground);
     if(!campground){ // for ERROR FLASHING IF CAMPGROUND NOT FOUND!
-      req.flash("error","Campgorund Not Found!")
-      return res.redirect("/campgrounds")
+      req.flash("error","Campgorund Not Found!");
+      return res.redirect("/campgrounds");
     }
     // console.log(campground);
     res.render("campgrounds/show.ejs", { campground });
@@ -57,10 +57,25 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateCampground = async (req, res) => { // form sends this PUT request
     const { id } = req.params;
+    console.log(req.body); // CHECKING THE DELETE TICK THING  
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
     const editImages = req.files.map(f=>({url:f.path,filename:f.filename}));
     campground.images.push(...editImages); // only UPDATE THE ARRAY;
     await campground.save();
+    //LOGIC 1 : 
+    if(req.body.deleteImages){
+      campground.images = campground.images.filter((img)=>{
+        return !req.body.deleteImages.includes(img.filename)
+      })
+      console.log(campground);
+    }
+    campground.save();
+    //LOGIC 2 : 
+    // if(req.body.deleteImages){
+    //   campground.updateOne({$pull:{images:{filename:{$in:req.body.deleteImages}}}});
+    //   console.log(campground)
+    // }
+    // campground.save();
     // Redirect to the show page of the updated campground
     req.flash("success","Campground Updated Successfully!");
     res.redirect(`/campgrounds/${campground._id}`);

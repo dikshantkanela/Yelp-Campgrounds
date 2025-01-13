@@ -24,7 +24,8 @@ const validateCampground = (req,res,next)=>{
         // image:Joi.string().required(),
         location: Joi.string().required(),
         description: Joi.string().required(),   
-      }).required()
+      }).required(),
+      deleteImages: Joi.array()
     }) // server side validation
     const {error} = requestValidator.validate(req.body); // validate everything that is coming from form
      

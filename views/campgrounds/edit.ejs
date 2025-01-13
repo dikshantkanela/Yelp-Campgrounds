@@ -55,11 +55,20 @@
       <input type="file" multiple name="image" class="form-control" id="image">
       <label class="input-group-text" for="image">Upload</label>
     </div>
-
+  <div class="mb-3">
+   <% campground.images.forEach((img,index)=>{ %>
+        <img src="<%= img.url %>" class="img-thumbnail" alt="">
+        <div class="form-check-inline">
+          <!-- THE KEY IN THE REQ.BODY WILL BE deleteImages(an array!!!) and VALUE WILL BE img.filename -->
+          <input type="checkbox" id="image-<%=index%>" name="deleteImages[]" value="<%=img.filename%>" >
+        </div>
+        <label style="cursor: pointer;" for="image-<%=index%>">Delete?</label>
+   <% }) %>
+  </div>
     <div class="mb-3">
       <button class="btn btn-danger">Update Campground</button>
     </div>
-
+  
     <a href="/campgrounds/<%= campground._id %>">Back to Campground</a>
   </form>
 </div>
