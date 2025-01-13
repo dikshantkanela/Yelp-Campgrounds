@@ -1,5 +1,8 @@
 const Campground = require("../models/campground");
 
+// used for deleting images from cloudinary as well:
+const {cloudinary} = require("../cloudinary/index");
+
 module.exports.index = async (req, res) => {
   const campgrounds = await Campground.find({}); //use async only when we routerly query
   res.render("campgrounds/index.ejs", { campgrounds });
@@ -64,6 +67,9 @@ module.exports.updateCampground = async (req, res) => { // form sends this PUT r
     await campground.save();
     //LOGIC 1 : 
     if(req.body.deleteImages){
+      for(let filename of req.body.deleteImages){ // DeleteImages IS AN ARRAY OF DELETED IMAGES
+       await cloudinary.uploader.destroy(filename)
+      }
       campground.images = campground.images.filter((img)=>{
         return !req.body.deleteImages.includes(img.filename)
       })
