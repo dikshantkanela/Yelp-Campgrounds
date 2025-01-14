@@ -10,29 +10,7 @@
 </head>
 <body>
     <div>
-       
-        <div class="parent-nav d-flex justify-content-around align-items-center">
-            <div class="left">
-             <a href="/campgrounds"><img src="../assets/campscape.png" alt=""></a>
-             
-            </div>
-            <div class="right">
-             <ul class="d-flex">
-               <%   if(currentUser){   %>
-                     <li><a href="/">Home</a></li>
-                     <li><a href="/campgrounds">Campgrounds</a></li>
-                     <li><a href="/logout">Logout</a></li>
-                <%  } else { %>
-                 <li><a href="/">Home</a></li>
-                 <li><a href="/campgrounds">Campgrounds</a></li>
-                 <li><a href="/login">Login</a></li>
-                 <li><a href="/register">Register</a></li>
-                <%  }  %>
-               
-                
-             </ul>
-            </div>
-         </div>
+        <%- include("./partials/navbar.ejs") %>
          <div class="hero d-flex justify-content-around align-items-center  mx-auto ">    
             <div class="hero-left">
                 <h1>Find your next adventure with <span>campverse.</span></h1>
@@ -40,9 +18,7 @@
                 <a href="/campgrounds" class="custom-btn">Explore Campgrounds</a>
             </div>
             <div class="hero-right">
-                <div class="wave-wrapper">
-                    <img src="../assets/hero_img.png" alt="">
-                </div>
+                <img  src="../assets/hero_img.png" alt="">
             </div>
          </div>
     </div>

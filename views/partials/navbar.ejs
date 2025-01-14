@@ -1,4 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<link rel="stylesheet" href="../stylesheets/home.css"> 
+ <div>
+       
+        <div class="parent-nav d-flex justify-content-around align-items-center">
+            <div class="left">
+             <a href="/campgrounds"><img src="../assets/campscape.png" alt=""></a>
+             
+            </div>
+            <div class="right">
+             <ul class="d-flex">
+               <%   if(currentUser){   %>
+                     <li><a href="/">Home</a></li>
+                     <li><a href="/campgrounds">Campgrounds</a></li>
+                     <li><a href="/logout">Logout</a></li>
+                <%  } else { %>
+                 <li><a href="/">Home</a></li>
+                 <li><a href="/campgrounds">Campgrounds</a></li>
+                 <li><a href="/login">Login</a></li>
+                 <li><a href="/register">Register</a></li>
+                <%  }  %>
+               
+                
+             </ul>
+            </div>
+         </div>
+
+<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">YelpCamp</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,4 +47,4 @@
         </div>
       </div>
     </div>
-  </nav>
+  </nav> -->

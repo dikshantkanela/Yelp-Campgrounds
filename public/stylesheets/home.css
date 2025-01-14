@@ -5,9 +5,7 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body {
-    overflow-x: hidden;
-}
+
 
 /* Navigation styles */
 .parent-nav {
@@ -219,5 +217,4 @@ li a:hover::after {
         font-size: 1.75rem;
     }
 }
-
 
