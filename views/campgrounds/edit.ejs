@@ -57,7 +57,8 @@
     </div>
   <div class="mb-3">
    <% campground.images.forEach((img,index)=>{ %>
-        <img src="<%= img.url %>" class="img-thumbnail" alt="">
+        <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
+        <%= console.log("Hello") %>
         <div class="form-check-inline">
           <!-- THE KEY IN THE REQ.BODY WILL BE deleteImages(an array!!!) and VALUE WILL BE img.filename -->
           <input type="checkbox" id="image-<%=index%>" name="deleteImages[]" value="<%=img.filename%>" >
