@@ -1,41 +1,55 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="container vh-100 d-flex justify-content-center align-items-center mb-4">
-    <div class="row w-100">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4">
-            <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
-                    alt="" class="card-img-top" />
-                <div class="card-body">
-                    <h5 class="card-title">Register</h5>
-                    <form action="/register" method="POST" class="validated-form" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" autofocus required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="email">Email</label>
-                            <input class="form-control" type="email" id="email" name="email" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <div class="d-grid">
-                            <button class="btn btn-success w-100">Register</button>
-                        </div>
-                    </form>
-                </div>
+<link rel="stylesheet" href="../stylesheets/login.css">
+<!-- MAIN CONTAINER -->
+<div class="container border d-flex justify-content-center align-items-center min-vh-100">
+    <!-- LOGIN CONTAINER -->
+    <div class="row border rounded-5 p-3 bg-white shadow box-area">
+        <!-- LEFT IMAGE -->
+        <div class="col-md-6 left-box rounded-4 d-flex justify-content-center align-items-center flex-column border">
+            <div class="featured-image mb-3 ">
+                <img class="img-fluid" style="width: 250px;" src="../assets/sign.png" alt="">
             </div>
+            <p class="text-white fs-2" style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Start Exploring</p>
+            <small class="text-white text-wrap text-center" style="width: 17rem;">Join Campverse to discover campgrounds and review others to find the best spots!</small>
+        </div>
+        <!-- RIGHT FORM  -->
+        <div class="col-md-6 right-box">
+          <div class="row align-items-center">
+            <div class="header-text mb-4">
+                <h2>Register as a user</h2>
+                <p>Welcome! Let’s get you registered.</p>
+                <form action="/register" method="POST" class="validated-form" novalidate>
+                    <div class="mb-3">
+                        <input class="form-control form-control-lg bg-light fs-6" placeholder="Username" type="text" id="username" name="username" autofocus required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <input class="form-control form-control-lg bg-light fs-6" placeholder="Email" type="email" id="email" name="email"  required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                     
+                    <div class="mb-4">
+                        <input class="form-control form-control-lg bg-light fs-6" placeholder="Password" type="password" id="password" name="password" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="input-group mb-4">
+                        <button class="btn btn-primary btn-lg w-100 fs-6">Register</button>
+                       </div>
+                       <div class="row">
+                        <small>Already have an account? <a href="/login">Login</a></small>
+                       </div>
+                </form>
+             
+            </div>
+          </div>
         </div>
     </div>
 </div>
