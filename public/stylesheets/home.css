@@ -9,12 +9,17 @@
 
 /* Navigation styles */
 .parent-nav {
-    padding: 2px;
+    position: sticky;
+    top: 0;
+    /* height: 80px; */
+    z-index: 1000;
+    padding: 0px;
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     flex-wrap: wrap;
     margin-bottom: 10px;
 }
+
 
 .left img {
     width: 90px;

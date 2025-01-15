@@ -1,41 +1,47 @@
 <% layout('layouts/boilerplate')%>
-<style>
- .card .shadow {
-  border-radius: 10px;
-  overflow: hidden;
-  
-  }
-  
-</style>
-</style>
-<div class="container d-flex justify-content-center align-items-center  ">
-    <div class="row">
-        <div class="col-md-6 offset-md-3 col-xl-4 offset-xl-4 mb-5">
-            <div class="card shadow">
-                <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
-                    alt="" class="card-img-top" />
-                <div class="card-body">
-                    <h5 class="card-title">Login</h5>
-                    <form action="/login" method="POST" class="validated-form" novalidate>
-                        <div class="mb-3">
-                            <label class="form-label" for="username">Username</label>
-                            <input class="form-control" type="text" id="username" name="username" autofocus required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label" for="password">Password</label>
-                            <input class="form-control" type="password" id="password" name="password" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                        </div>
-                        <button class="btn btn-success w-100">Login</button>
-                    </form>
-                </div>
+<link rel="stylesheet" href="../stylesheets/login.css">
+<!-- MAIN CONTAINER -->
+<div class="container border d-flex justify-content-center align-items-center min-vh-100">
+    <!-- LOGIN CONTAINER -->
+    <div class="row border rounded-5 p-3 bg-white shadow box-area">
+        <!-- LEFT IMAGE -->
+        <div class="col-md-6 left-box rounded-4 d-flex justify-content-center align-items-center flex-column border">
+            <div class="featured-image mb-3 ">
+                <img class="img-fluid" style="width: 250px;" src="../assets/sign.png" alt="">
             </div>
+            <p class="text-white fs-2" style="font-family:Verdana, Geneva, Tahoma, sans-serif;">Be Verified</p>
+            <small class="text-white text-wrap text-center" style="width: 17rem;">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas, numquam?</small>
+        </div>
+        <!-- RIGHT FORM  -->
+        <div class="col-md-6 right-box">
+          <div class="row align-items-center">
+            <div class="header-text mb-4">
+                <h2>Hello, Again!</h2>
+                <p>Welcome back! Ready to pick up where you left off?</p>
+                <form action="/login" method="POST" class="validated-form" novalidate>
+                    <div class="mb-3">
+                        <input class="form-control form-control-lg bg-light fs-6" placeholder="Username" type="text" id="username" name="username" autofocus required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <input class="form-control form-control-lg bg-light fs-6" placeholder="Password" type="password" id="password" name="password" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="input-group mb-4">
+                        <button class="btn btn-primary btn-lg w-100 fs-6">Login</button>
+                       </div>
+                       <div class="row">
+                        <small>Don't have an account? <a href="/register">Register</a></small>
+                       </div>
+                </form>
+             
+            </div>
+          </div>
         </div>
     </div>
 </div>
