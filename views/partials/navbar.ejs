@@ -1,50 +1,44 @@
 <link rel="stylesheet" href="../stylesheets/navbar.css"> 
- <div>
-       
-        <div class="parent-nav d-flex justify-content-around align-items-center">
-            <div class="left">
-             <a href="/campgrounds"><img src="../assets/campscape.png" alt=""></a>
-             
-            </div>
-            <div class="right">
-             <ul class="d-flex">
-               <%   if(currentUser){   %>
-                     <li><a class="active" href="/">Home</a></li>
-                     <li><a href="/campgrounds">Campgrounds</a></li>
-                     <li><a href="/logout">Logout</a></li>
-                <%  } else { %>
-                 <li><a class="activeBtn" href="/">Home</a></li>
-                 <li><a href="/campgrounds">Campgrounds</a></li>
-                 <li><a href="/login">Login</a></li>
-                 <li><a href="/register">Register</a></li>
-                <%  }  %>
-               
-                
-             </ul>
-            </div>
-         </div>
-
-<!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">YelpCamp</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link" href="/">Home</a>
-          <a class="nav-link" href="/campgrounds">Campgrounds</a>
-          <a class="nav-link" href="/campgrounds/new">New Campground</a>
-       
-        </div>
-        <div class="navbar-nav ms-auto">
-          <% if (!currentUser) { %>
-            <a class="nav-link" href="/login">Login</a>
-            <a class="nav-link" href="/register">Register</a>
-          <% } else { %>
-            <a class="nav-link" href="/logout">Logout</a>
-          <% } %>
-        </div>
-      </div>
+<div>
+  <div class="parent-nav d-flex justify-content-around align-items-center">
+    <div class="left">
+      <a href="/campgrounds"><img src="../assets/campscape.png" alt=""></a>
     </div>
-  </nav> -->
+    <div class="right">
+      <ul class="d-flex">
+        <% if (currentUser) { %>
+          <li><a class="" href="/">Home</a></li>
+          <li><a class="" href="/campgrounds">Campgrounds</a></li>
+          <li><a class="" href="/logout">Logout</a></li>
+        <% } else { %>
+          <li><a class="" href="/">Home</a></li>
+          <li><a class="" href="/campgrounds">Campgrounds</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="/register">Register</a></li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+ <!-- FOR ADDING BORDER BOTTOM ON CLICK OF LINKS -->
+  <script>
+    // Add active class on page load based on current URL
+   document.addEventListener("DOMContentLoaded",()=>{
+    const navItems = document.querySelectorAll("li a");
+    const currentPath = window.location.pathname; // tells current /
+    navItems.forEach((link)=>{
+      if(link.getAttribute('href')===currentPath){
+        link.classList.add("activeBtn"); //behind the scene every link will have but will appear only on the one ur at!
+      }
+    });
+
+    navItems.forEach((link)=>{
+      link.addEventListener("click",()=>{
+        navItems.forEach(link => {
+         link.classList.remove("activeBtn") // Remove active class, so it will not appear on every nav link behind the scenes
+        });
+        link.classList.add("activeBtn") // add active class only to the clicked one :)
+      })
+    });
+   })
+  </script>
+</div>
