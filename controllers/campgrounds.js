@@ -1,5 +1,6 @@
 const Campground = require("../models/campground");
-
+const maptilerClient = require("@maptiler/client");
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
 // used for deleting images from cloudinary as well:
 const {cloudinary} = require("../cloudinary/index");
 
@@ -22,7 +23,9 @@ module.exports.createCampground = async (req, res, next) => {
       // if(!req.body.campground.price){
     
       // }`;
+  const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
   const campground = new Campground(req.body.campground);
+  campground.geometry = geoData.features[0].geometry;
   const images = req.files.map(f=>({url:f.path,filename:f.filename})); //TAKE ALL UPLOADED IMAGES FROM req.files AND THEN STORE THEM IN N ARRAY OF OBJECT
   campground.images = images; 
   campground.author = req.user._id; // THE AUTHOR OF THE CAMPGROUND IS THE LOGGED IN USER WHEN A NEW CAMPGROUND IS CREATED
@@ -62,6 +65,8 @@ module.exports.updateCampground = async (req, res) => { // form sends this PUT r
     const { id } = req.params;
     console.log(req.body); // CHECKING THE DELETE TICK THING  
     const campground = await Campground.findByIdAndUpdate(id, { ...req.body.campground }, { new: true });
+    const geoData = await maptilerClient.geocoding.forward(req.body.campground.location, { limit: 1 });
+    campground.geometry = geoData.features[0].geometry;
     const editImages = req.files.map(f=>({url:f.path,filename:f.filename}));
     campground.images.push(...editImages); // only UPDATE THE ARRAY;
     await campground.save();

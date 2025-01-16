@@ -45,7 +45,7 @@ li a {
     position: relative;
     transition: color 0.3s ease;
 }
-.active {
+.activeBtn{
     color: #4475F2; /* Change text color for active link */
     border-bottom: 2px solid #4475F2 ;
 }
